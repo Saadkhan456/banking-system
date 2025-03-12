@@ -17,10 +17,10 @@ const Navbar = () => {
         position: "relative",
       }}
     >
-      {/* Hamburger Menu Icon (Mobile Only) */}
+      {/* Menu Icon */}
       <div
         style={{
-          display: "none", // Hidden by default
+          display: "none",
           fontSize: "1.5rem",
           color: "#ecf0f1",
           cursor: "pointer",

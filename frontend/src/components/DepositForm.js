@@ -3,7 +3,7 @@ import { useOutletContext } from "react-router-dom";
 import axios from "axios";
 
 const DepositForm = () => {
-  const { balance, setBalance } = useOutletContext(); // Get balance and setBalance from context
+  const { balance, setBalance } = useOutletContext();
   const [username, setUsername] = useState("");
   const [cardNumber, setCardNumber] = useState("");
   const [pin, setPin] = useState("");
@@ -14,7 +14,7 @@ const DepositForm = () => {
   const handleDeposit = async (e) => {
     e.preventDefault();
     try {
-      const depositAmount = parseFloat(amount); // Convert amount to a number
+      const depositAmount = parseFloat(amount);
       if (isNaN(depositAmount)) {
         setMessage("Invalid amount. Please enter a valid number.");
         return;
@@ -25,11 +25,11 @@ const DepositForm = () => {
         card_number: cardNumber,
         pin,
         phone_number: phoneNumber,
-        amount: depositAmount, // Send as a number
+        amount: depositAmount,
       });
       if (res.data.success) {
         setMessage(res.data.message);
-        setBalance(res.data.balance); // Update the balance
+        setBalance(res.data.balance);
       } else {
         setMessage(res.data.message);
       }

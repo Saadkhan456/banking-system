@@ -1,6 +1,5 @@
 const db = require("../config/db");
 
-// Login function
 const login = (req, res) => {
   const { username, password } = req.body;
   db.query(
@@ -25,11 +24,9 @@ const login = (req, res) => {
   );
 };
 
-// Register function
 const register = (req, res) => {
   const { username, password } = req.body;
 
-  // Check if username already exists
   db.query(
     "SELECT * FROM users WHERE username = ?",
     [username],
@@ -43,7 +40,6 @@ const register = (req, res) => {
         return res.json({ success: false, message: "Username already exists" });
       }
 
-      // Insert new user into the database with a default balance of 1000
       db.query(
         "INSERT INTO users (username, password, role, balance) VALUES (?, ?, ?, ?)",
         [username, password, "user", 1000.0],
@@ -59,16 +55,13 @@ const register = (req, res) => {
   );
 };
 
-// Withdraw function
 const withdraw = (req, res) => {
   const { username, card_number, pin, phone_number, amount } = req.body;
 
-  // Validate card number and pin
   if (card_number !== "1234 5678 1234 5678" || pin !== "1098") {
     return res.json({ success: false, message: "Invalid card number or PIN" });
   }
 
-  // Check if the user exists and has sufficient balance
   db.query(
     "SELECT balance FROM users WHERE username = ?",
     [username],
@@ -82,8 +75,8 @@ const withdraw = (req, res) => {
         return res.json({ success: false, message: "User not found" });
       }
 
-      const currentBalance = parseFloat(results[0].balance); // Ensure balance is a number
-      const withdrawAmount = parseFloat(amount); // Ensure amount is a number
+      const currentBalance = parseFloat(results[0].balance);
+      const withdrawAmount = parseFloat(amount);
 
       if (isNaN(withdrawAmount)) {
         return res.json({ success: false, message: "Invalid amount" });
@@ -93,10 +86,9 @@ const withdraw = (req, res) => {
         return res.json({ success: false, message: "Insufficient balance" });
       }
 
-      const newBalance = currentBalance - withdrawAmount; // Perform numeric subtraction
-      console.log("New balance after withdrawal:", newBalance); // Debug log
+      const newBalance = currentBalance - withdrawAmount;
+      console.log("New balance after withdrawal:", newBalance);
 
-      // Update the user's balance
       db.query(
         "UPDATE users SET balance = ? WHERE username = ?",
         [newBalance, username],
@@ -106,7 +98,6 @@ const withdraw = (req, res) => {
             return res.json({ success: false, message: "Database error" });
           }
 
-          // Insert withdrawal record into the database
           db.query(
             "INSERT INTO user_withdraw (username, card_number, pin, phone_number, amount) VALUES (?, ?, ?, ?, ?)",
             [username, card_number, pin, phone_number, withdrawAmount],
@@ -128,18 +119,15 @@ const withdraw = (req, res) => {
   );
 };
 
-// Deposit function
 const deposit = (req, res) => {
   const { username, card_number, pin, phone_number, amount } = req.body;
 
-  // Validate card number and pin
   if (card_number !== "1234 5678 1234 5678" || pin !== "1098") {
     return res.json({ success: false, message: "Invalid card number or PIN" });
   }
 
-  console.log("Deposit request received for user:", username); // Debug log
+  console.log("Deposit request received for user:", username);
 
-  // Check if the user exists
   db.query(
     "SELECT balance FROM users WHERE username = ?",
     [username],
@@ -153,17 +141,16 @@ const deposit = (req, res) => {
         return res.json({ success: false, message: "User not found" });
       }
 
-      const currentBalance = parseFloat(results[0].balance); // Ensure balance is a number
-      const depositAmount = parseFloat(amount); // Ensure amount is a number
+      const currentBalance = parseFloat(results[0].balance);
+      const depositAmount = parseFloat(amount);
 
       if (isNaN(depositAmount)) {
         return res.json({ success: false, message: "Invalid amount" });
       }
 
-      const newBalance = currentBalance + depositAmount; // Perform numeric addition
-      console.log("New balance after deposit:", newBalance); // Debug log
+      const newBalance = currentBalance + depositAmount;
+      console.log("New balance after deposit:", newBalance);
 
-      // Update the user's balance
       db.query(
         "UPDATE users SET balance = ? WHERE username = ?",
         [newBalance, username],
@@ -173,7 +160,6 @@ const deposit = (req, res) => {
             return res.json({ success: false, message: "Database error" });
           }
 
-          // Insert deposit record into the database
           db.query(
             "INSERT INTO user_deposit (username, card_number, pin, phone_number, amount) VALUES (?, ?, ?, ?, ?)",
             [username, card_number, pin, phone_number, depositAmount],
@@ -195,7 +181,6 @@ const deposit = (req, res) => {
   );
 };
 
-// Get user balance
 const getBalance = (req, res) => {
   const { username } = req.params;
 
@@ -216,7 +201,6 @@ const getBalance = (req, res) => {
   );
 };
 
-// Get all users with their balances
 const getAllUsers = (req, res) => {
   db.query("SELECT username, balance FROM users", (err, results) => {
     if (err) {
@@ -227,7 +211,6 @@ const getAllUsers = (req, res) => {
   });
 };
 
-// Get all deposits
 const getAllDeposits = (req, res) => {
   db.query(
     "SELECT username, amount, timestamp FROM user_deposit",
@@ -241,7 +224,6 @@ const getAllDeposits = (req, res) => {
   );
 };
 
-// Get all withdrawals
 const getAllWithdrawals = (req, res) => {
   db.query(
     "SELECT username, amount, timestamp FROM user_withdraw",
@@ -254,8 +236,6 @@ const getAllWithdrawals = (req, res) => {
     }
   );
 };
-
-// Export all functions
 module.exports = {
   login,
   register,

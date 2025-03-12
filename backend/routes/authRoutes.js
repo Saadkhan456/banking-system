@@ -12,14 +12,12 @@ const {
 
 const router = express.Router();
 
-// Existing routes
 router.post("/login", login);
 router.post("/register", register);
 router.post("/withdraw", withdraw);
 router.post("/deposit", deposit);
 router.get("/balance/:username", getBalance);
 
-// New routes for banker dashboard
 router.get("/users", getAllUsers);
 router.get("/deposits", getAllDeposits);
 router.get("/withdrawals", getAllWithdrawals);

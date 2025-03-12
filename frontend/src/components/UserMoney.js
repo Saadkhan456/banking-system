@@ -8,7 +8,6 @@ const UserMoney = () => {
   const { username } = location.state || { username: "Guest" };
   const [balance, setBalance] = useState(0);
 
-  // Fetch user balance when the component mounts
   useEffect(() => {
     if (username !== "Guest") {
       axios
@@ -37,7 +36,7 @@ const UserMoney = () => {
         style={{
           flex: 1,
           padding: "20px",
-          marginLeft: "250px", // Adjust based on sidebar width
+          marginLeft: "250px",
         }}
       >
         <h1 style={{ color: "#333", marginBottom: "10px" }}>

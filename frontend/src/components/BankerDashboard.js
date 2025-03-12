@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Sidebar from "./Sidebar"; // Assuming you have a Sidebar component
+import Sidebar from "./Sidebar";
 
 const BankerDashboard = () => {
   const [users, setUsers] = useState([]);
   const [deposits, setDeposits] = useState([]);
   const [withdrawals, setWithdrawals] = useState([]);
 
-  // Fetch all users, deposits, and withdrawals from the backend
   useEffect(() => {
-    // Fetch all users with their balances
     axios
       .get("http://localhost:5000/api/auth/users")
       .then((res) => {
@@ -21,7 +19,6 @@ const BankerDashboard = () => {
         console.error("Failed to fetch users:", err);
       });
 
-    // Fetch all deposits
     axios
       .get("http://localhost:5000/api/auth/deposits")
       .then((res) => {
@@ -33,7 +30,6 @@ const BankerDashboard = () => {
         console.error("Failed to fetch deposits:", err);
       });
 
-    // Fetch all withdrawals
     axios
       .get("http://localhost:5000/api/auth/withdrawals")
       .then((res) => {
@@ -59,7 +55,7 @@ const BankerDashboard = () => {
         style={{
           flex: 1,
           padding: "20px",
-          marginLeft: "250px", // Adjust based on sidebar width
+          marginLeft: "250px",
         }}
       >
         <h1 style={{ color: "#333", marginBottom: "20px" }}>

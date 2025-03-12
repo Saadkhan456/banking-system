@@ -15,7 +15,6 @@ const UserForm = () => {
         password,
       });
       if (res.data.success) {
-        // Pass username and balance as state when navigating to /userMoney
         navigate("/userMoney", {
           state: { username: res.data.username, balance: res.data.balance },
         });
